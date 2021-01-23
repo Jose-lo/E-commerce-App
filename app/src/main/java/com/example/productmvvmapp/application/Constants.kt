@@ -1,4 +1,4 @@
-package com.example.productmvvmapp.data.application
+package com.example.productmvvmapp.application
 
 object Constants {
 

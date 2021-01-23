@@ -1,5 +1,9 @@
 package com.example.productmvvmapp.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 data class Product (
     val id: Int= 0,
     val name: String= "",
@@ -13,3 +17,26 @@ data class Product (
         )
 
 data class ProductList(val products: List<Product> = listOf())
+
+@Entity(tableName = "productEntity")
+data class ProductEntity (
+
+        @PrimaryKey
+        val id: Int= 0,
+        @ColumnInfo(name = "name")
+        val name: String= "",
+        @ColumnInfo(name = "description")
+        val description: String = "",
+        @ColumnInfo(name = "miniRating")
+        val miniRating: Double = 0.0,
+        @ColumnInfo(name = "totalRating")
+        val totalRating: Int = 0,
+        @ColumnInfo(name = "price")
+        val price: Double = 0.0,
+        @ColumnInfo(name = "cuttedPrec")
+        val cuttedPrec: Double = 0.0,
+        @ColumnInfo(name = "descriptionLarge")
+        val descriptionLarge: String = "",
+        @ColumnInfo(name = "image")
+        val image: String = ""
+)

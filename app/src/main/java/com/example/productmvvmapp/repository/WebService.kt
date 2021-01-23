@@ -1,6 +1,6 @@
 package com.example.productmvvmapp.repository
 
-import com.example.productmvvmapp.data.application.Constants
+import com.example.productmvvmapp.application.Constants
 import com.example.productmvvmapp.data.model.ProductList
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit

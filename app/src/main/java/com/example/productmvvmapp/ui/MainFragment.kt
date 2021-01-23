@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import com.example.productmvvmapp.R
 import com.example.productmvvmapp.core.Resource
+import com.example.productmvvmapp.data.local.AppDatabase
+import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentMainBinding
@@ -27,7 +29,8 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
 
     private lateinit var binding : FragmentMainBinding
     private val viewmodel by viewModels<MainViewModel> { MainViewModelProviders(ProductRepositoryImpl(
-        RemoteDataSource(RetrofitClient.webservice)
+        RemoteDataSource(RetrofitClient.webservice),
+        LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
     )) }
 
     private lateinit var concatAdapter: ConcatAdapter
@@ -57,6 +60,10 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
                 }
             }
         })
+
+        binding.btnGoFavorites.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_favoriteFragment)
+        }
     }
 
     override fun onProductClick(product: Product) {
@@ -68,7 +75,7 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
             product.price.toFloat(),
             product.cuttedPrec.toFloat(),
             product.descriptionLarge,
-            product.image
+            product.image, product.id
         )
         findNavController().navigate(action)
     }
