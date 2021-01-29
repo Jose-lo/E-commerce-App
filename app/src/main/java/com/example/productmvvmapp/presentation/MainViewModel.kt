@@ -1,10 +1,8 @@
 package com.example.productmvvmapp.presentation
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.productmvvmapp.core.Resource
+import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.model.ProductEntity
 import com.example.productmvvmapp.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers
@@ -27,12 +25,18 @@ class MainViewModel(private val repo: ProductRepository):ViewModel() {
         }
     }
 
-    fun getProductFavorites() = liveData(Dispatchers.IO) {
+    fun getProductFavorites() = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
         emit(Resource.Loading())
         try {
-            emit(repo.getProductFavorite())
+            emitSource(repo.getProductFavorite().map { Resource.Success(it) })
         }catch (e: Exception){
             emit(Resource.Failure(e))
+        }
+    }
+
+    fun deleteProductFavorite(product: Product){
+        viewModelScope.launch {
+            repo.deleteProductFavorite(product)
         }
     }
 }

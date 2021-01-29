@@ -35,7 +35,7 @@ class ProductAdapter (
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         when(holder){
-            is ProductViewHolder -> holder.bind(prodctList[position])
+            is ProductViewHolder -> holder.bind(prodctList[position],position)
         }
     }
 
@@ -45,7 +45,7 @@ class ProductAdapter (
         private val binding: ProductItemBinding,
         val context: Context
     ) : BaseViewHolder<Product>(binding.root) {
-        override fun bind(item: Product) {
+        override fun bind(item: Product,position: Int) {
             Glide.with(context).load(item.image)
                 .centerCrop().into(binding.imgProduct)
             binding.txtProduct.text = item.name

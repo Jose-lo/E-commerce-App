@@ -40,3 +40,29 @@ data class ProductEntity (
         @ColumnInfo(name = "image")
         val image: String = ""
 )
+
+fun Product.toProductEntity(): ProductEntity = ProductEntity(
+    this.id,
+    this.name,
+    this.description,
+    this.miniRating,
+    this.totalRating,
+    this.price,
+    this.cuttedPrec,
+    this.descriptionLarge,
+    this.image
+)
+
+fun List<ProductEntity>.asProductList(): List<Product> = this.map {
+        Product(
+                it.id,
+                it.name,
+                it.description,
+                it.miniRating,
+                it.totalRating,
+                it.price,
+                it.cuttedPrec,
+                it.descriptionLarge,
+                it.image
+        )
+}
