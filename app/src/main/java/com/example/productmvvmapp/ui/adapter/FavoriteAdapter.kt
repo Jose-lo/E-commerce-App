@@ -39,7 +39,7 @@ class FavoriteAdapter (
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
             ItemFavoriteRowBinding.inflate(LayoutInflater.from(context), parent, false)
-        val holder = ProductViewHolder(itemBinding,context)
+        val holder = ProductViewHolder(itemBinding)
         return holder
     }
 
@@ -53,8 +53,7 @@ class FavoriteAdapter (
     override fun getItemCount(): Int = prodctList.size
 
     private inner class ProductViewHolder(
-        private val binding: ItemFavoriteRowBinding,
-        val context: Context
+        private val binding: ItemFavoriteRowBinding
     ) : BaseViewHolder<Product>(binding.root) {
         override fun bind(item: Product,position: Int) {
             Glide.with(context).load(item.image)
