@@ -13,17 +13,18 @@ import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.ProductEntity
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentDetailBinding
+import com.example.productmvvmapp.presentation.DetailViewModel
 import com.example.productmvvmapp.presentation.MainViewModel
 import com.example.productmvvmapp.presentation.MainViewModelProviders
 import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
-import com.example.productmvvmapp.ui.DetailFragmentArgs
+import com.example.productmvvmapp.ui.fragments.DetailFragment
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private lateinit var binding: FragmentDetailBinding
     private val args by navArgs<DetailFragmentArgs>()
-    private val viewmodel by viewModels<MainViewModel> { MainViewModelProviders(ProductRepositoryImpl(
+    private val viewmodel by viewModels<DetailViewModel> { MainViewModelProviders(ProductRepositoryImpl(
         RemoteDataSource(RetrofitClient.webservice),
         LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
     )) }

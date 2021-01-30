@@ -19,7 +19,7 @@ import com.example.productmvvmapp.presentation.MainViewModel
 import com.example.productmvvmapp.presentation.MainViewModelProviders
 import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
-import com.example.productmvvmapp.ui.MainFragmentDirections
+import com.example.productmvvmapp.ui.fragments.MainFragmentDirections
 import com.example.productmvvmapp.ui.adapter.ProductAdapter
 import com.example.productmvvmapp.ui.concat.AllProductsConcatAdapter
 import com.example.productmvvmapp.ui.concat.MakeupProductsConcatAdapter

@@ -13,6 +13,7 @@ import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentFavoriteBinding
+import com.example.productmvvmapp.presentation.FavoriteViewModel
 import com.example.productmvvmapp.presentation.MainViewModel
 import com.example.productmvvmapp.presentation.MainViewModelProviders
 import com.example.productmvvmapp.repository.ProductRepositoryImpl
@@ -21,7 +22,7 @@ import com.example.productmvvmapp.ui.adapter.FavoriteAdapter
 
 class FavoriteFragment : Fragment(R.layout.fragment_favorite), FavoriteAdapter.OnFavoriteClickListener {
 
-    private val viewmodel by viewModels<MainViewModel> { MainViewModelProviders(ProductRepositoryImpl(
+    private val viewmodel by viewModels<FavoriteViewModel> { MainViewModelProviders(ProductRepositoryImpl(
         RemoteDataSource(RetrofitClient.webservice),
         LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
     )) }
@@ -47,11 +48,8 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite), FavoriteAdapter.O
 
                 }
                 is Resource.Success->{
-                    val list = it.data.map {
-                        Product(it.id,it.name,it.description,it.miniRating,it.totalRating,it.price,
-                        it.cuttedPrec,it.descriptionLarge,it.image)
-                    }
-                    favoritesAdapter.setProductList(list)
+
+                    favoritesAdapter.setProductList(it.data)
 
                 }
                 is Resource.Failure->{
