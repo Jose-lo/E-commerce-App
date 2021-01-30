@@ -1,22 +1,16 @@
-package com.example.productmvvmapp.ui
+package com.example.productmvvmapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.map
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.productmvvmapp.R
 import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.Product
-import com.example.productmvvmapp.data.model.ProductEntity
-import com.example.productmvvmapp.data.model.toProductEntity
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentFavoriteBinding
 import com.example.productmvvmapp.presentation.MainViewModel

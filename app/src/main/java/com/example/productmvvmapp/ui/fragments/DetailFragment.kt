@@ -1,10 +1,8 @@
-package com.example.productmvvmapp.ui
+package com.example.productmvvmapp.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -17,9 +15,9 @@ import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentDetailBinding
 import com.example.productmvvmapp.presentation.MainViewModel
 import com.example.productmvvmapp.presentation.MainViewModelProviders
-import com.example.productmvvmapp.repository.ProductRepository
 import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
+import com.example.productmvvmapp.ui.DetailFragmentArgs
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 

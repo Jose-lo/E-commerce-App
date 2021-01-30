@@ -1,4 +1,4 @@
-package com.example.productmvvmapp.ui
+package com.example.productmvvmapp.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +19,7 @@ import com.example.productmvvmapp.presentation.MainViewModel
 import com.example.productmvvmapp.presentation.MainViewModelProviders
 import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
+import com.example.productmvvmapp.ui.MainFragmentDirections
 import com.example.productmvvmapp.ui.adapter.ProductAdapter
 import com.example.productmvvmapp.ui.concat.AllProductsConcatAdapter
 import com.example.productmvvmapp.ui.concat.MakeupProductsConcatAdapter
@@ -64,14 +65,14 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
 
     override fun onProductClick(product: Product) {
         val action = MainFragmentDirections.actionMainFragmentToDetailFragment(
-            product.name,
-            product.description,
-            product.miniRating.toFloat(),
-            product.totalRating.toFloat(),
-            product.price.toFloat(),
-            product.cuttedPrec.toFloat(),
-            product.descriptionLarge,
-            product.image, product.id
+                product.name,
+                product.description,
+                product.miniRating.toFloat(),
+                product.totalRating.toFloat(),
+                product.price.toFloat(),
+                product.cuttedPrec.toFloat(),
+                product.descriptionLarge,
+                product.image, product.id
         )
         findNavController().navigate(action)
     }
