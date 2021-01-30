@@ -89,6 +89,10 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
                 findNavController().navigate(R.id.action_mainFragment_to_favoriteFragment)
                 false
             }
+            R.id.cart ->{
+                findNavController().navigate(R.id.action_mainFragment_to_cartFragment)
+                false
+            }
             else -> false
         }
     }

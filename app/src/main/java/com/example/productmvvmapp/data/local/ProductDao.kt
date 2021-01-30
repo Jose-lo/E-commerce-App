@@ -2,6 +2,7 @@ package com.example.productmvvmapp.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.ProductEntity
 
 @Dao
@@ -15,5 +16,15 @@ interface ProductDao {
 
     @Delete
     suspend fun deleteFavorite(product: ProductEntity)
+
+    @Query("SELECT * FROM carTable")
+    fun getCartProducts(): LiveData<List<CarEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCart(product: CarEntity)
+
+    @Delete
+    suspend fun deleteCart(product: CarEntity)
+
 
 }

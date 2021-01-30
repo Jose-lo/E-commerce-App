@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.productmvvmapp.R
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
+import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.ProductEntity
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentDetailBinding
@@ -42,7 +43,15 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         binding.btnSaveFavorites.setOnClickListener {
             viewmodel.saveProduct(ProductEntity(args.id,args.name,args.description,args.miniRating.toDouble(),
                 args.totalRating.toInt(),args.price.toDouble(),args.cuttedPrec.toDouble(),args.descriptionLarge,args.image))
-            Toast.makeText(requireContext(),"Se guardo el producto",Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(),"Se guardo en favoritos",Toast.LENGTH_SHORT).show()
         }
+
+        binding.btnSaveCart.setOnClickListener {
+            viewmodel.insertCartFavorite(CarEntity(args.id,args.name,args.description,args.miniRating.toDouble(),
+                    args.totalRating.toInt(),args.price.toDouble(),args.cuttedPrec.toDouble(),args.descriptionLarge,args.image))
+            Toast.makeText(requireContext(),"Se guardo la cesta",Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 }

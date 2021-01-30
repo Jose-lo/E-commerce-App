@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.ProductEntity
 
-@Database(entities = [ProductEntity::class], version = 1)
+@Database(entities = [ProductEntity::class,CarEntity::class], version = 2)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun productDao(): ProductDao
@@ -20,7 +21,7 @@ abstract class AppDatabase: RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "product_table"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
 
             return INSTANCE!!
         }

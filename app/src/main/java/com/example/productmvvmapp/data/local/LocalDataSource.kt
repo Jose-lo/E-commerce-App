@@ -3,12 +3,11 @@ package com.example.productmvvmapp.data.local
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.productmvvmapp.core.Resource
-import com.example.productmvvmapp.data.model.Product
-import com.example.productmvvmapp.data.model.ProductEntity
-import com.example.productmvvmapp.data.model.asProductList
-import com.example.productmvvmapp.data.model.toProductEntity
+import com.example.productmvvmapp.data.model.*
 
 class LocalDataSource(private val productDao: ProductDao) {
+
+    //Favorites
 
     suspend fun saveProduct(product: ProductEntity){
         productDao.insertFavorite(product)
@@ -21,4 +20,19 @@ class LocalDataSource(private val productDao: ProductDao) {
     suspend fun deleteProductFavorite(product: Product){
         productDao.deleteFavorite(product.toProductEntity())
     }
+
+    //Car
+
+    fun getCarProducts():LiveData<List<Product>>{
+        return productDao.getCartProducts().map { it.asProducCartList() }
+    }
+
+    suspend fun insertCar(product: CarEntity){
+        productDao.insertCart(product)
+    }
+
+    suspend fun deleteCar(product: Product){
+        productDao.deleteCart(product.toProductCartEntity())
+    }
+
 }
