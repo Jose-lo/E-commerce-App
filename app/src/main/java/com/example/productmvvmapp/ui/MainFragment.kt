@@ -2,10 +2,8 @@ package com.example.productmvvmapp.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -37,6 +35,7 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         binding = FragmentMainBinding.bind(view)
 
         concatAdapter = ConcatAdapter()
@@ -61,9 +60,6 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
             }
         })
 
-        binding.btnGoFavorites.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_favoriteFragment)
-        }
     }
 
     override fun onProductClick(product: Product) {
@@ -78,5 +74,21 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
             product.image, product.id
         )
         findNavController().navigate(action)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.favoritos -> {
+                findNavController().navigate(R.id.action_mainFragment_to_favoriteFragment)
+                false
+            }
+            else -> false
+        }
     }
 }
