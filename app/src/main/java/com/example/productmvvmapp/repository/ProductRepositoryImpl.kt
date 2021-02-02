@@ -1,7 +1,7 @@
 package com.example.productmvvmapp.repository
 
 import androidx.lifecycle.LiveData
-import com.example.productmvvmapp.core.Resource
+import androidx.lifecycle.MutableLiveData
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.Product
@@ -9,9 +9,14 @@ import com.example.productmvvmapp.data.model.ProductEntity
 import com.example.productmvvmapp.data.model.ProductList
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 
-class ProductRepositoryImpl(private val dataSource:RemoteDataSource,
-                            private val dataSourceLocal: LocalDataSource
+class ProductRepositoryImpl(
+    private val dataSource: RemoteDataSource,
+    private val dataSourceLocal: LocalDataSource
 ):ProductRepository {
+
+    private val mutableTotalPrice = MutableLiveData<Double>()
+    private val mutableCart: MutableLiveData<List<Product>> = MutableLiveData<List<Product>>()
+
     override suspend fun getAllProductList(): ProductList {
         return dataSource.getAllProducts()
     }

@@ -1,12 +1,9 @@
 package com.example.productmvvmapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,46 +20,79 @@ import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
 import com.example.productmvvmapp.ui.adapter.CartAdapter
 
-class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickListener {
+class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickListener{
 
     private lateinit var binding: FragmentCartBinding
     private lateinit var cartAdapter:CartAdapter
+    private lateinit var mCartListItems: List<Product>
+
+
+
     private val viewmodel by viewModels<CartViewModel> {
-        MainViewModelProviders(ProductRepositoryImpl
-        (RemoteDataSource(RetrofitClient.webservice),
-                LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())))
+        MainViewModelProviders(
+            ProductRepositoryImpl
+                (
+                RemoteDataSource(RetrofitClient.webservice),
+                LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
+            )
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cartAdapter = CartAdapter(requireContext(),this)
+        cartAdapter = CartAdapter(requireContext(), this)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCartBinding.bind(view)
+
         setUpRecyclerview()
 
         viewmodel.getCartProducts().observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading->{
+            when (it) {
+                is Resource.Loading -> {
                 }
-                is Resource.Success->{
+                is Resource.Success -> {
                     cartAdapter.setCartList(it.data)
                 }
-                is Resource.Failure->{
-                    Toast.makeText(requireContext(),"Error: ${it.exception}", Toast.LENGTH_SHORT).show()
+                is Resource.Failure -> {
+                    Toast.makeText(requireContext(), "Error: ${it.exception}", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
+
+
+        //
+
     }
 
     private fun setUpRecyclerview(){
-        binding.rvCart.addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
+        binding.rvCart.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
         binding.rvCart.adapter = cartAdapter
     }
 
     override fun onCartListener(product: Product, position: Int) {
         viewmodel.deleteCartFavorite(product)
+    }
+
+    override fun onCartQuantityListener(products: List<Product>, product: Product, position: Int) {
+            mCartListItems = products
+            var subTotal: Double = 0.0
+            for (product in mCartListItems) {
+                val price = product.price
+                val quantity = product.quantity
+
+                subTotal += (price * quantity)
+            }
+            binding.amount.setText("Total: $ ${subTotal}")
+
     }
 }

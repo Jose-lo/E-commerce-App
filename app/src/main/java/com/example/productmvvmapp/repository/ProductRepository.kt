@@ -1,6 +1,7 @@
 package com.example.productmvvmapp.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.Product

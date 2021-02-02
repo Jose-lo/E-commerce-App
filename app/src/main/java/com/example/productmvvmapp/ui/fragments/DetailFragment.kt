@@ -42,13 +42,13 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
         binding.btnSaveFavorites.setOnClickListener {
             viewmodel.saveProduct(ProductEntity(args.id,args.name,args.description,args.miniRating.toDouble(),
-                args.totalRating.toInt(),args.price.toDouble(),args.cuttedPrec.toDouble(),args.descriptionLarge,args.image))
+                args.totalRating.toInt(),args.price.toDouble(),args.quantity, args.cuttedPrec.toDouble(),args.descriptionLarge,args.image))
             Toast.makeText(requireContext(),"Se guardo en favoritos",Toast.LENGTH_SHORT).show()
         }
 
         binding.btnSaveCart.setOnClickListener {
             viewmodel.insertCartFavorite(CarEntity(args.id,args.name,args.description,args.miniRating.toDouble(),
-                    args.totalRating.toInt(),args.price.toDouble(),args.cuttedPrec.toDouble(),args.descriptionLarge,args.image))
+                    args.totalRating.toInt(),args.quantity,args.price.toDouble(),args.cuttedPrec.toDouble(),args.descriptionLarge,args.image))
             Toast.makeText(requireContext(),"Se guardo la cesta",Toast.LENGTH_SHORT).show()
         }
 

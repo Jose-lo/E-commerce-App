@@ -1,72 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/img_cart"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/txt_title_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Producto"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/img_cart"
+        app:layout_constraintTop_toTopOf="@+id/img_cart" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="56dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    <TextView
+        android:id="@+id/txt_deription_cart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="80dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Margarita con ingredientes, soda, vodka, limon y nueces"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_cart"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title_cart" />
 
-            <TextView
-                android:id="@+id/txt_title_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Producto"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    <TextView
+        android:id="@+id/txt_price_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="price"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/txt_deription_cart"
+        app:layout_constraintTop_toBottomOf="@+id/txt_deription_cart" />
 
-            <TextView
-                android:id="@+id/txt_deription_cart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="Margarita con ingredientes, soda, vodka, limon y nueces" />
+    <ImageView
+        android:id="@+id/btn_erase_cart"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_deription_cart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_deription_cart"
+        app:layout_constraintTop_toTopOf="@+id/txt_deription_cart" />
 
-            <TextView
-                android:layout_marginTop="8dp"
-                android:id="@+id/txt_price_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="price"/>
+    <ImageView
+        android:id="@+id/minium_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_baseline_remove_24"
+        app:layout_constraintStart_toStartOf="@+id/txt_deription_cart"
+        app:layout_constraintTop_toBottomOf="@+id/txt_deription_cart" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/amount_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/minium_cart"
+        app:layout_constraintStart_toEndOf="@+id/minium_cart"
+        app:layout_constraintTop_toTopOf="@+id/minium_cart" />
 
-        <ImageView
-            android:id="@+id/btn_erase_cart"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_delete_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/plus_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="@+id/amount_cart"
+        app:layout_constraintStart_toEndOf="@+id/amount_cart"
+        app:layout_constraintTop_toTopOf="@+id/amount_cart" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

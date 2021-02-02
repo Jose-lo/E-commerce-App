@@ -1,19 +1,21 @@
 package com.example.productmvvmapp.data.model
 
+import androidx.lifecycle.MutableLiveData
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 data class Product (
-    val id: Int= 0,
-    val name: String= "",
-    val description: String = "",
-    val miniRating: Double = 0.0,
-    val totalRating: Int = 0,
-    val price: Double = 0.0,
-    val cuttedPrec: Double = 0.0,
-    val descriptionLarge: String = "",
-    val image: String = ""
+        val id: Int= 0,
+        val name: String= "",
+        val description: String = "",
+        val miniRating: Double = 0.0,
+        var totalRating: Int = 0,
+        var quantity:Int=0,
+        var price: Double = 0.0,
+        val cuttedPrec: Double = 0.0,
+        val descriptionLarge: String = "",
+        val image: String = ""
         )
 
 data class ProductList(val products: List<Product> = listOf())
@@ -30,9 +32,11 @@ data class ProductEntity (
         @ColumnInfo(name = "miniRating")
         val miniRating: Double = 0.0,
         @ColumnInfo(name = "totalRating")
-        val totalRating: Int = 0,
+        var totalRating: Int = 0,
         @ColumnInfo(name = "price")
-        val price: Double = 0.0,
+        var price: Double = 0.0,
+        @ColumnInfo(name = "quantity")
+        var quantity:Int=0,
         @ColumnInfo(name = "cuttedPrec")
         val cuttedPrec: Double = 0.0,
         @ColumnInfo(name = "descriptionLarge")
@@ -53,9 +57,11 @@ data class CarEntity (
         @ColumnInfo(name = "miniRating")
         val miniRating: Double = 0.0,
         @ColumnInfo(name = "totalRating")
-        val totalRating: Int = 0,
+        var totalRating: Int = 0,
+        @ColumnInfo(name = "quantity")
+        var quantity:Int=0,
         @ColumnInfo(name = "price")
-        val price: Double = 0.0,
+        var price: Double = 0.0,
         @ColumnInfo(name = "cuttedPrec")
         val cuttedPrec: Double = 0.0,
         @ColumnInfo(name = "descriptionLarge")
@@ -73,6 +79,7 @@ fun Product.toProductEntity(): ProductEntity = ProductEntity(
     this.miniRating,
     this.totalRating,
     this.price,
+        this.quantity,
     this.cuttedPrec,
     this.descriptionLarge,
     this.image
@@ -84,6 +91,7 @@ fun Product.toProductCartEntity(): CarEntity = CarEntity(
         this.description,
         this.miniRating,
         this.totalRating,
+        this.quantity,
         this.price,
         this.cuttedPrec,
         this.descriptionLarge,
@@ -97,6 +105,7 @@ fun List<ProductEntity>.asProductList(): List<Product> = this.map {
                 it.description,
                 it.miniRating,
                 it.totalRating,
+                it.quantity,
                 it.price,
                 it.cuttedPrec,
                 it.descriptionLarge,
@@ -111,6 +120,7 @@ fun List<CarEntity>.asProducCartList(): List<Product> = this.map {
                 it.description,
                 it.miniRating,
                 it.totalRating,
+                it.quantity,
                 it.price,
                 it.cuttedPrec,
                 it.descriptionLarge,

@@ -72,7 +72,8 @@ class MainFragment : Fragment(R.layout.fragment_main),ProductAdapter.OnProductCl
                 product.price.toFloat(),
                 product.cuttedPrec.toFloat(),
                 product.descriptionLarge,
-                product.image, product.id
+                product.image, product.id,
+                product.quantity
         )
         findNavController().navigate(action)
     }

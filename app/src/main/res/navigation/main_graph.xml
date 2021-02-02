@@ -52,6 +52,9 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <argument
+            android:name="quantity"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"

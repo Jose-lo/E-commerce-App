@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.ProductEntity
 
-@Database(entities = [ProductEntity::class,CarEntity::class], version = 2)
+@Database(entities = [ProductEntity::class,CarEntity::class], version = 3)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun productDao(): ProductDao
