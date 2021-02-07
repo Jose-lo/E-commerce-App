@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TitlesH1Brown" >
+        <item name="android:textSize">@dimen/pay_mod_common_home_title_h1_brown</item>
+        <item name="android:lineSpacingExtra">@dimen/pay_mod_common_home_spacing_xshort</item>
+        <item name="android:textColor">@color/pay_mod_common_label_semi_bold_brown</item>
+    </style>
+</resources>
