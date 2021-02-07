@@ -20,15 +20,12 @@ import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
 import com.example.productmvvmapp.ui.adapter.CartAdapter
 
-class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickListener{
-
+class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickListener {
     private lateinit var binding: FragmentCartBinding
-    private lateinit var cartAdapter:CartAdapter
+    private lateinit var cartAdapter: CartAdapter
     private lateinit var mCartListItems: List<Product>
 
-
-
-    private val viewmodel by viewModels<CartViewModel> {
+    private val viewModel by viewModels<CartViewModel> {
         MainViewModelProviders(
             ProductRepositoryImpl
                 (
@@ -41,21 +38,27 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         cartAdapter = CartAdapter(requireContext(), this)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCartBinding.bind(view)
-
         setUpRecyclerview()
+        getCarProducts()
 
-        viewmodel.getCartProducts().observe(viewLifecycleOwner, Observer {
+    }
+
+    private fun setUpRecyclerview() {
+        binding.rvCart.adapter = cartAdapter
+    }
+
+    private fun getCarProducts(){
+        viewModel.getCartProducts().observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    cartAdapter.setCartList(it.data)
+                    initView(it.data)
                 }
                 is Resource.Failure -> {
                     Toast.makeText(requireContext(), "Error: ${it.exception}", Toast.LENGTH_SHORT)
@@ -64,35 +67,29 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickLi
             }
         })
 
-
-        //
-
     }
 
-    private fun setUpRecyclerview(){
-        binding.rvCart.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
-        binding.rvCart.adapter = cartAdapter
+    private fun initView(products: List<Product>){
+        viewModel.resetAmount()
+        cartAdapter.setCartList(products)
+        viewModel.calculateTotalAmount(products)
+        binding.textViewAmount.text = (" Total: " + viewModel.getAmount())
     }
 
     override fun onCartListener(product: Product, position: Int) {
-        viewmodel.deleteCartFavorite(product)
+        viewModel.deleteCartFavorite(product)
     }
 
     override fun onCartQuantityListener(products: List<Product>, product: Product, position: Int) {
-            mCartListItems = products
-            var subTotal: Double = 0.0
-            for (product in mCartListItems) {
-                val price = product.price
-                val quantity = product.quantity
+        mCartListItems = products
+        var subTotal: Double = 0.0
+        for (product in mCartListItems) {
+            val price = product.price
+            val quantity = product.quantity
 
-                subTotal += (price * quantity)
-            }
-            binding.amount.setText("Total: $ ${subTotal}")
+            subTotal += (price * quantity)
+        }
+        binding.textViewAmount.setText("Total: $ ${subTotal}")
 
     }
 }

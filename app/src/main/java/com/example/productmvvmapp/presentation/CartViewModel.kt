@@ -10,6 +10,9 @@ import kotlinx.coroutines.launch
 class CartViewModel(private val repo: ProductRepository): ViewModel() {
 
     val textValue : MutableLiveData<String> = MutableLiveData("")
+    private var totalAmount :  Double  = 0.0
+
+    fun getAmount() = totalAmount
 
     fun getCartProducts() = liveData(viewModelScope.coroutineContext + Dispatchers.IO){
         emit(Resource.Loading())
@@ -24,6 +27,16 @@ class CartViewModel(private val repo: ProductRepository): ViewModel() {
     fun deleteCartFavorite(product: Product){
         viewModelScope.launch {
             repo.deleteCartFavorite(product)
+        }
+    }
+
+    fun resetAmount() {
+        totalAmount = 0.0
+    }
+
+    fun calculateTotalAmount(products: List<Product>) {
+        products.forEach {
+            totalAmount += it.price
         }
     }
 }
