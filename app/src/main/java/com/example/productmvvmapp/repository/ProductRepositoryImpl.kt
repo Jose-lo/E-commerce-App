@@ -1,21 +1,17 @@
 package com.example.productmvvmapp.repository
 
+import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.productmvvmapp.data.local.LocalDataSource
-import com.example.productmvvmapp.data.model.CarEntity
-import com.example.productmvvmapp.data.model.Product
-import com.example.productmvvmapp.data.model.ProductEntity
-import com.example.productmvvmapp.data.model.ProductList
+import com.example.productmvvmapp.data.model.*
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 
 class ProductRepositoryImpl(
     private val dataSource: RemoteDataSource,
     private val dataSourceLocal: LocalDataSource
 ):ProductRepository {
-
-    private val mutableTotalPrice = MutableLiveData<Double>()
-    private val mutableCart: MutableLiveData<List<Product>> = MutableLiveData<List<Product>>()
 
     override suspend fun getAllProductList(): ProductList {
         return dataSource.getAllProducts()
@@ -50,5 +46,20 @@ class ProductRepositoryImpl(
 
     override suspend fun deleteCartFavorite(product: Product) {
         dataSourceLocal.deleteCar(product)
+    }
+
+    //Firebase
+    override suspend fun setRegister(
+        fragment: Fragment,
+        email: EditText,
+        password: EditText,
+        firstName: EditText,
+        lastName: EditText
+    ) {
+        dataSource.setRegister(fragment,email,password,firstName,lastName)
+    }
+
+    override suspend fun getLogin(fragment: Fragment, email: EditText, password: EditText) {
+        dataSource.getLogin(fragment,email,password)
     }
 }

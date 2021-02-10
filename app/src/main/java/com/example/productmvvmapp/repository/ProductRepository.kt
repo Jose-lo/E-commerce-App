@@ -1,12 +1,11 @@
 package com.example.productmvvmapp.repository
 
+import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.productmvvmapp.core.Resource
-import com.example.productmvvmapp.data.model.CarEntity
-import com.example.productmvvmapp.data.model.Product
-import com.example.productmvvmapp.data.model.ProductEntity
-import com.example.productmvvmapp.data.model.ProductList
+import com.example.productmvvmapp.data.model.*
 
 interface ProductRepository {
 
@@ -20,4 +19,7 @@ interface ProductRepository {
     suspend fun getCartProducts(): LiveData<List<Product>>
     suspend fun insertCartFavorite(product: CarEntity)
     suspend fun deleteCartFavorite(product: Product)
+
+    suspend fun setRegister(fragment: Fragment,email:EditText,password: EditText,firstName: EditText, lastName:EditText)
+    suspend fun getLogin(fragment: Fragment, email: EditText, password: EditText)
 }

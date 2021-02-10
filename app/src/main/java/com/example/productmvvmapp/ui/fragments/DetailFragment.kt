@@ -12,6 +12,7 @@ import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.ProductEntity
+import com.example.productmvvmapp.data.remote.FirestoreClass
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentDetailBinding
 import com.example.productmvvmapp.presentation.DetailViewModel
@@ -26,7 +27,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private lateinit var binding: FragmentDetailBinding
     private val args by navArgs<DetailFragmentArgs>()
     private val viewmodel by viewModels<DetailViewModel> { MainViewModelProviders(ProductRepositoryImpl(
-        RemoteDataSource(RetrofitClient.webservice),
+        RemoteDataSource(RetrofitClient.webservice, FirestoreClass()),
         LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
     )) }
 

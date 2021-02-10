@@ -12,6 +12,7 @@ import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.Product
+import com.example.productmvvmapp.data.remote.FirestoreClass
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentCartBinding
 import com.example.productmvvmapp.presentation.CartViewModel
@@ -29,7 +30,7 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickLi
         MainViewModelProviders(
             ProductRepositoryImpl
                 (
-                RemoteDataSource(RetrofitClient.webservice),
+                RemoteDataSource(RetrofitClient.webservice, FirestoreClass()),
                 LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
             )
         )

@@ -7,11 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.productmvvmapp.R
+import com.example.productmvvmapp.application.toast
+import com.example.productmvvmapp.data.local.AppDatabase
+import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.User
 import com.example.productmvvmapp.data.remote.FirestoreClass
+import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentRegisterBinding
+import com.example.productmvvmapp.presentation.MainViewModel
+import com.example.productmvvmapp.presentation.MainViewModelProviders
+import com.example.productmvvmapp.presentation.RegisterViewModel
+import com.example.productmvvmapp.repository.ProductRepositoryImpl
+import com.example.productmvvmapp.repository.RetrofitClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +32,12 @@ import com.google.firebase.auth.FirebaseUser
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private lateinit var binding: FragmentRegisterBinding
+    private val viewmodel by viewModels<RegisterViewModel> { MainViewModelProviders(
+        ProductRepositoryImpl(
+        RemoteDataSource(RetrofitClient.webservice, FirestoreClass()),
+        LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
+    )
+    ) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,88 +45,65 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
         binding.btnRegister.setOnClickListener {
             registerUser()
-            btnGoLogin()
         }
+        btnGoLogin()
     }
 
     private fun validateRegisterDetails(): Boolean {
         return when {
             TextUtils.isEmpty(binding.etFirstName.text.toString().trim { it <= ' ' }) -> {
-                Toast.makeText(requireContext(), "Escriba su nombre", Toast.LENGTH_SHORT).show()
+                toast("Escriba su nombre")
                 false
             }
 
             TextUtils.isEmpty(binding.etLastName.text.toString().trim { it <= ' ' }) -> {
-                Toast.makeText(requireContext(), "Escriba su apellido", Toast.LENGTH_SHORT).show()
+                toast("Escriba su apellido")
                 false
             }
 
             TextUtils.isEmpty(binding.etEmail.text.toString().trim { it <= ' ' }) -> {
-                Toast.makeText(requireContext(), "Escriba su correo", Toast.LENGTH_SHORT).show()
+                toast("Escriba su correo")
                 false
             }
 
             TextUtils.isEmpty(binding.etPassword.text.toString().trim { it <= ' ' }) -> {
-                Toast.makeText(requireContext(), "Escriba su contraseña", Toast.LENGTH_SHORT).show()
+                toast("Escriba su contraseña")
                 false
             }
 
             TextUtils.isEmpty(binding.etConfirmPassword.text.toString().trim { it <= ' ' }) -> {
-                Toast.makeText(requireContext(), "Confirme su contraseña", Toast.LENGTH_SHORT).show()
+                toast("Confirme su contraseña")
                 false
             }
 
             binding.etPassword.text.toString().trim { it <= ' ' } != binding.etConfirmPassword.text.toString()
                 .trim { it <= ' ' } -> {
-                Toast.makeText(requireContext(), "Sus contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                toast("Sus contraseñas no coinciden")
                 false
             }
             !binding.cbTermsAndCondition.isChecked -> {
-                Toast.makeText(requireContext(), "Acepte terminos y condiciones", Toast.LENGTH_SHORT).show()
+                toast("Acepte terminos y condiciones")
                 false
             }
             else -> {
-
+                toast("Registro exitoso")
                 true
             }
         }
     }
 
     private fun registerUser() {
-
-
         if (validateRegisterDetails()) {
-
-
-            val email: String = binding.etEmail.text.toString().trim { it <= ' ' }
-            val password: String = binding.etPassword.text.toString().trim { it <= ' ' }
-
-
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                    OnCompleteListener<AuthResult> { task ->
-
-                        if (task.isSuccessful) {
-
-                            val firebaseUser: FirebaseUser = task.result!!.user!!
-
-                            val user = User(
-                                firebaseUser.uid,
-                                binding.etFirstName.text.toString().trim { it <= ' ' },
-                                binding.etLastName.text.toString().trim { it <= ' ' },
-                                binding.etEmail.text.toString().trim { it <= ' ' }
-                            )
-
-                            FirestoreClass().registerUser(user)
-
-                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-
-                        } else {
-                            Toast.makeText(requireContext(), "Error ${task.exception.toString()}", Toast.LENGTH_SHORT).show()
-                        }
-                    })
+            viewmodel.setRegister(
+                this,
+                binding.etEmail,
+                binding.etPassword,
+                binding.etFirstName,
+                binding.etLastName
+            )
         }
     }
+
 
     private fun btnGoLogin(){
         binding.tvLogin.setOnClickListener {

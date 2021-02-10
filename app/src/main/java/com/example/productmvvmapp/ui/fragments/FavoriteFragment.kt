@@ -12,6 +12,7 @@ import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.Product
+import com.example.productmvvmapp.data.remote.FirestoreClass
 import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.FragmentFavoriteBinding
 import com.example.productmvvmapp.presentation.FavoriteViewModel
@@ -24,7 +25,7 @@ import com.example.productmvvmapp.ui.adapter.FavoriteAdapter
 class FavoriteFragment : Fragment(R.layout.fragment_favorite), FavoriteAdapter.OnFavoriteClickListener {
 
     private val viewmodel by viewModels<FavoriteViewModel> { MainViewModelProviders(ProductRepositoryImpl(
-        RemoteDataSource(RetrofitClient.webservice),
+        RemoteDataSource(RetrofitClient.webservice, FirestoreClass()),
         LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
     )) }
 
