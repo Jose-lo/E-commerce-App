@@ -8,6 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.productmvvmapp.R
+import com.example.productmvvmapp.application.hide
+import com.example.productmvvmapp.application.show
 import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
@@ -20,11 +22,14 @@ import com.example.productmvvmapp.presentation.MainViewModelProviders
 import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
 import com.example.productmvvmapp.ui.adapter.CartAdapter
+import com.google.firebase.auth.FirebaseAuth
 
 class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickListener {
     private lateinit var binding: FragmentCartBinding
     private lateinit var cartAdapter: CartAdapter
     private lateinit var mCartListItems: List<Product>
+    private val mAuth = FirebaseAuth.getInstance()
+
 
     private val viewModel by viewModels<CartViewModel> {
         MainViewModelProviders(
@@ -74,7 +79,7 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickLi
         viewModel.resetAmount()
         cartAdapter.setCartList(products)
         viewModel.calculateTotalAmount(products)
-        binding.textViewAmount.text = (" Total: " + viewModel.getAmount())
+        binding.textViewAmount.text = (" Total: $" + viewModel.getAmount())
     }
 
     override fun onCartListener(product: Product, position: Int) {
@@ -90,7 +95,20 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartAdapter.OnCartClickLi
 
             subTotal += (price * quantity)
         }
-        binding.textViewAmount.setText("Total: $ ${subTotal}")
+        binding.textViewAmount.setText("${subTotal}")
 
     }
+
+    override fun onStart() {
+        super.onStart()
+        if(mAuth.currentUser != null){
+            binding.cartContainer.show()
+            binding.emptyContainer.hide()
+        }else{
+            binding.cartContainer.hide()
+            binding.emptyContainer.show()
+
+        }
+    }
+
 }

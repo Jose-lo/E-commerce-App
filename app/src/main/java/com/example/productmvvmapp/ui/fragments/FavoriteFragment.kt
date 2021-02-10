@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.productmvvmapp.R
+import com.example.productmvvmapp.application.show
 import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
@@ -50,7 +51,10 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite), FavoriteAdapter.O
 
                 }
                 is Resource.Success->{
-
+                    if(it.data.isEmpty()){
+                        binding.emptyContainer.root.show()
+                        return@Observer
+                    }
                     favoritesAdapter.setProductList(it.data)
 
                 }
@@ -67,6 +71,5 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite), FavoriteAdapter.O
 
     override fun onFavoriteClick(product: Product, position: Int) {
         viewmodel.deleteProductFavorite(product)
-
     }
 }

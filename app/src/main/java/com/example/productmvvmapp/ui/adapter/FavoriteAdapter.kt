@@ -3,21 +3,12 @@ package com.example.productmvvmapp.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DiffUtil.DiffResult.NO_POSITION
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.productmvvmapp.core.BaseViewHolder
-import com.example.productmvvmapp.data.local.AppDatabase
-import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.Product
-import com.example.productmvvmapp.data.remote.RemoteDataSource
 import com.example.productmvvmapp.databinding.ItemFavoriteRowBinding
-import com.example.productmvvmapp.presentation.MainViewModel
-import com.example.productmvvmapp.presentation.MainViewModelProviders
-import com.example.productmvvmapp.repository.ProductRepositoryImpl
-import com.example.productmvvmapp.repository.RetrofitClient
 
 class FavoriteAdapter (
         private val context: Context,
@@ -64,7 +55,7 @@ class FavoriteAdapter (
             binding.btnEraseFavorite.setOnClickListener {
                 //itemClickListener.onFavoriteClick(item,position)
 
-                val position = adapterPosition.takeIf { it != NO_POSITION }
+                 adapterPosition.takeIf { it != NO_POSITION }
                         ?: return@setOnClickListener
 
                 itemClickListener.onFavoriteClick(prodctList[position],position)
