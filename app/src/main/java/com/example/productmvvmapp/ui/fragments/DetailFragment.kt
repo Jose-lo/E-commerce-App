@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -12,6 +13,7 @@ import com.example.productmvvmapp.R
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.CarEntity
+import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.model.ProductEntity
 import com.example.productmvvmapp.data.remote.FirestoreClass
 import com.example.productmvvmapp.data.remote.RemoteDataSource
@@ -23,12 +25,15 @@ import com.example.productmvvmapp.repository.ProductRepositoryImpl
 import com.example.productmvvmapp.repository.RetrofitClient
 import com.example.productmvvmapp.ui.fragments.DetailFragment
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private lateinit var binding: FragmentDetailBinding
     private val args by navArgs<DetailFragmentArgs>()
     private val mAuth = FirebaseAuth.getInstance()
+    private var isCocktailFavorited: Boolean? = null
+    private lateinit var product: Product
     private val viewmodel by viewModels<DetailViewModel> {
         MainViewModelProviders(
             ProductRepositoryImpl(
@@ -36,6 +41,27 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                 LocalDataSource(AppDatabase.getDatabase(requireContext()).productDao())
             )
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requireArguments().let {
+            DetailFragmentArgs.fromBundle(it).also { args ->
+                product = Product(
+                    args.id,
+                    args.name,
+                    args.description,
+                    args.miniRating.toDouble(),
+                    args.totalRating.toInt(),
+                    args.quantity,
+                    args.price.toDouble(),
+                    args.cuttedPrec.toDouble(),
+                    args.descriptionLarge,
+                    args.image
+                )
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,6 +75,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         binding.txtPrice.text = "$ ${args.price} MXN"
         saveFavorites()
         saveCartItems()
+        sendFavorites()
     }
 
     private fun saveFavorites() {
@@ -75,24 +102,32 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
         binding.btnSaveCart.setOnClickListener {
             if (mAuth.currentUser != null) {
-                viewmodel.insertCartFavorite(
-                    CarEntity(
-                        args.id,
-                        args.name,
-                        args.description,
-                        args.miniRating.toDouble(),
-                        args.totalRating.toInt(),
-                        args.quantity,
-                        args.price.toDouble(),
-                        args.cuttedPrec.toDouble(),
-                        args.descriptionLarge,
-                        args.image
-                    )
-                )
-                Toast.makeText(requireContext(), "Se guardo la cesta", Toast.LENGTH_SHORT).show()
+                val isCocktailFavorited = isCocktailFavorited ?: return@setOnClickListener
+                viewmodel.saveOrDeleteCartItem(product)
+                this.isCocktailFavorited = !isCocktailFavorited
+                updateButtonIcon()
+
             } else {
                 findNavController().navigate(R.id.action_detailFragment_to_loginFragment)
             }
+        }
+    }
+
+    private  fun updateButtonIcon() {
+        val isCocktailFavorited = isCocktailFavorited ?: return
+
+        binding.btnSaveCart.setImageResource(
+            when {
+                isCocktailFavorited -> R.drawable.ic_baseline_delete_24
+                else -> R.drawable.ic_baseline_shopping_cart_24
+            }
+        )
+    }
+
+    private fun sendFavorites(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            isCocktailFavorited = viewmodel.isInsertCart(product)
+            updateButtonIcon()
         }
     }
 }

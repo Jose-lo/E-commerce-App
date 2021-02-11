@@ -26,5 +26,7 @@ interface ProductDao {
     @Delete
     suspend fun deleteCart(product: CarEntity)
 
+    @Query("SELECT * FROM carTable WHERE id = :id")
+    suspend fun getCarById(id: String): CarEntity?
 
 }

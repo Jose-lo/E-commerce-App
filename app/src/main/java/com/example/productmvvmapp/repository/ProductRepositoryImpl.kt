@@ -40,13 +40,16 @@ class ProductRepositoryImpl(
         return dataSourceLocal.getCarProducts()
     }
 
-    override suspend fun insertCartFavorite(product: CarEntity) {
+    override suspend fun insertCartFavorite(product: Product) {
         dataSourceLocal.insertCar(product)
     }
 
     override suspend fun deleteCartFavorite(product: Product) {
         dataSourceLocal.deleteCar(product)
     }
+
+    override suspend fun isCartInsert(product: Product): Boolean =
+        dataSourceLocal.isCartInsert(product)
 
     //Firebase
     override suspend fun setRegister(
@@ -62,4 +65,5 @@ class ProductRepositoryImpl(
     override suspend fun getLogin(fragment: Fragment, email: EditText, password: EditText) {
         dataSource.getLogin(fragment,email,password)
     }
+
 }

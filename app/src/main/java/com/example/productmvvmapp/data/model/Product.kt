@@ -1,10 +1,13 @@
 package com.example.productmvvmapp.data.model
 
+import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Product (
         val id: Int= 0,
         val name: String= "",
@@ -16,7 +19,7 @@ data class Product (
         val cuttedPrec: Double = 0.0,
         val descriptionLarge: String = "",
         val image: String = ""
-        )
+        ): Parcelable
 
 data class ProductList(val products: List<Product> = listOf())
 

@@ -28,12 +28,16 @@ class LocalDataSource(private val productDao: ProductDao) {
         return productDao.getCartProducts().map { it.asProducCartList() }
     }
 
-    suspend fun insertCar(product: CarEntity){
-        productDao.insertCart(product)
+    suspend fun insertCar(product: Product){
+        productDao.insertCart(product.toProductCartEntity())
     }
 
     suspend fun deleteCar(product: Product){
         productDao.deleteCart(product.toProductCartEntity())
+    }
+
+    suspend fun isCartInsert(product: Product): Boolean{
+        return productDao.getCarById(product.id.toString()) != null
     }
 
 }
