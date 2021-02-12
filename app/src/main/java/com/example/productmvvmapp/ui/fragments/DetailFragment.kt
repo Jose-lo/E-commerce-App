@@ -36,6 +36,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val mAuth = FirebaseAuth.getInstance()
     private var isProductFavorite: Boolean? = null
     private lateinit var product: Product
+    var mProductID : String = ""
     private val viewmodel by viewModels<DetailViewModel> {
         MainViewModelProviders(
             ProductRepositoryImpl(
@@ -105,7 +106,15 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         binding.btnSaveCart.setOnClickListener {
             if (mAuth.currentUser != null) {
                 val isCocktailFavorited = isProductFavorite ?: return@setOnClickListener
-                viewmodel.saveOrDeleteCartItem(product)
+                val addCartItem = CartItem(
+                    FirestoreClass().getCurrentUserID(),
+                    mProductID,
+                    product.name,
+                    product.price.toString(),
+                    product.image,
+                    Constants.DEFAULT_CART_QUANTITY
+                )
+                viewmodel.saveOrDeleteCartItem(product,addCartItem)
                 this.isProductFavorite = !isCocktailFavorited
                 updateButtonIcon()
 

@@ -2,6 +2,7 @@ package com.example.productmvvmapp.data.remote
 
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.productmvvmapp.data.model.CartItem
 import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.model.ProductList
 import com.example.productmvvmapp.data.model.User
@@ -25,8 +26,8 @@ class RemoteDataSource(private val webService: WebService, private val firestore
         firestoreClass.getLogin(fragment,email,password)
     }
 
-    fun addCartItems(product: Product){
-        firestoreClass.addCartItems(product)
+    fun addCartItems(addToCart: CartItem){
+        firestoreClass.addCartItems(addToCart)
     }
 
 }

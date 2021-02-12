@@ -94,10 +94,7 @@ class FirestoreClass {
                 })
     }
 
-    fun addCartItems(product: Product) {
-
-        val addToCart = CartItem()
-        var mProductID : String = ""
+    fun addCartItems(addToCart: CartItem) {
 
         mFireStore.collection(Constants.CART_ITEMS)
             .document()
@@ -105,14 +102,6 @@ class FirestoreClass {
             .set(addToCart, SetOptions.merge())
             .addOnSuccessListener {
 
-                 CartItem(
-                    getCurrentUserID(),
-                    mProductID,
-                    product.name,
-                    product.price.toString(),
-                    product.image,
-                    Constants.DEFAULT_CART_QUANTITY
-                )
 
             }
             .addOnFailureListener { e ->
