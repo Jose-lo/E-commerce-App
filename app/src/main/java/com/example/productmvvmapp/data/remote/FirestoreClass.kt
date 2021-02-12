@@ -1,5 +1,6 @@
 package com.example.productmvvmapp.data.remote
 
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -8,7 +9,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.productmvvmapp.R
 import com.example.productmvvmapp.application.Constants
 import com.example.productmvvmapp.application.toast
+import com.example.productmvvmapp.data.model.CarEntity
+import com.example.productmvvmapp.data.model.CartItem
+import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.model.User
+import com.example.productmvvmapp.ui.fragments.DetailFragment
 import com.example.productmvvmapp.ui.fragments.LoginFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
@@ -87,5 +92,31 @@ class FirestoreClass {
                         fragment.toast("Error: ${task.exception.toString()}")
                     }
                 })
+    }
+
+    fun addCartItems(product: Product) {
+
+        val addToCart = CartItem()
+        var mProductID : String = ""
+
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document()
+
+            .set(addToCart, SetOptions.merge())
+            .addOnSuccessListener {
+
+                 CartItem(
+                    getCurrentUserID(),
+                    mProductID,
+                    product.name,
+                    product.price.toString(),
+                    product.image,
+                    Constants.DEFAULT_CART_QUANTITY
+                )
+
+            }
+            .addOnFailureListener { e ->
+
+            }
     }
 }

@@ -10,9 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.productmvvmapp.R
+import com.example.productmvvmapp.application.Constants
 import com.example.productmvvmapp.data.local.AppDatabase
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.CarEntity
+import com.example.productmvvmapp.data.model.CartItem
 import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.model.ProductEntity
 import com.example.productmvvmapp.data.remote.FirestoreClass
@@ -32,7 +34,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private lateinit var binding: FragmentDetailBinding
     private val args by navArgs<DetailFragmentArgs>()
     private val mAuth = FirebaseAuth.getInstance()
-    private var isCocktailFavorited: Boolean? = null
+    private var isProductFavorite: Boolean? = null
     private lateinit var product: Product
     private val viewmodel by viewModels<DetailViewModel> {
         MainViewModelProviders(
@@ -102,9 +104,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
         binding.btnSaveCart.setOnClickListener {
             if (mAuth.currentUser != null) {
-                val isCocktailFavorited = isCocktailFavorited ?: return@setOnClickListener
+                val isCocktailFavorited = isProductFavorite ?: return@setOnClickListener
                 viewmodel.saveOrDeleteCartItem(product)
-                this.isCocktailFavorited = !isCocktailFavorited
+                this.isProductFavorite = !isCocktailFavorited
                 updateButtonIcon()
 
             } else {
@@ -114,7 +116,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private  fun updateButtonIcon() {
-        val isCocktailFavorited = isCocktailFavorited ?: return
+        val isCocktailFavorited = isProductFavorite ?: return
 
         binding.btnSaveCart.setImageResource(
             when {
@@ -126,7 +128,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private fun sendFavorites(){
         viewLifecycleOwner.lifecycleScope.launch {
-            isCocktailFavorited = viewmodel.isInsertCart(product)
+            isProductFavorite = viewmodel.isInsertCart(product)
             updateButtonIcon()
         }
     }

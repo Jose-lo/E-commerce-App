@@ -25,4 +25,8 @@ class RemoteDataSource(private val webService: WebService, private val firestore
         firestoreClass.getLogin(fragment,email,password)
     }
 
+    fun addCartItems(product: Product){
+        firestoreClass.addCartItems(product)
+    }
+
 }

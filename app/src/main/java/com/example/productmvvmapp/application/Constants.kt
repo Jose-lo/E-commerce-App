@@ -4,4 +4,6 @@ object Constants {
 
     const val BASE_URL = "http://www.arjometales.com/services/"
     const val USERS: String = "users"
+    const val CART_ITEMS: String = "cart_items"
+    const val DEFAULT_CART_QUANTITY: String = "1"
 }

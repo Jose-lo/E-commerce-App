@@ -23,4 +23,5 @@ interface ProductRepository {
     suspend fun setRegister(fragment: Fragment,email:EditText,password: EditText,firstName: EditText, lastName:EditText)
     suspend fun getLogin(fragment: Fragment, email: EditText, password: EditText)
     suspend fun isCartInsert(product: Product): Boolean
+    suspend fun addCartItems(product: Product)
 }

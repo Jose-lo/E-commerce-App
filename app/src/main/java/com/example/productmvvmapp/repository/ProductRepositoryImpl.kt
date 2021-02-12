@@ -66,4 +66,7 @@ class ProductRepositoryImpl(
         dataSource.getLogin(fragment,email,password)
     }
 
+    override suspend fun addCartItems(product: Product) {
+        dataSource.addCartItems(product)
+    }
 }

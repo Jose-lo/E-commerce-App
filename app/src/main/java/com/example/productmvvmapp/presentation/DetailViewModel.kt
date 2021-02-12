@@ -26,6 +26,7 @@ class DetailViewModel(private  val repo: ProductRepository): ViewModel() {
                 repo.deleteCartFavorite(product)
             } else{
                 repo.insertCartFavorite(product)
+                repo.addCartItems(product)
             }
         }
     }
