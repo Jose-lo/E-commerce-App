@@ -1,5 +1,6 @@
 package com.example.productmvvmapp.data.remote
 
+import android.content.Context
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.productmvvmapp.R
 import com.example.productmvvmapp.application.Constants
 import com.example.productmvvmapp.application.toast
+import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.model.CarEntity
 import com.example.productmvvmapp.data.model.CartItem
 import com.example.productmvvmapp.data.model.Product
@@ -21,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.tasks.await
 
 class FirestoreClass {
 
@@ -98,14 +101,36 @@ class FirestoreClass {
 
         mFireStore.collection(Constants.CART_ITEMS)
             .document()
-
             .set(addToCart, SetOptions.merge())
+
+    }
+
+    suspend fun fetchCartItems():Resource<List<CartItem>>{
+        val cartList = mutableListOf<CartItem>()
+        val querySnapshot = mFireStore.collection(Constants.CART_ITEMS).get().await()
+        for(cart in querySnapshot.documents){
+            cart.toObject(CartItem::class.java)?.let { cartList.add(it) }
+        }
+        return Resource.Success(cartList)
+    }
+
+    fun removeItemFromCart(context: Context, cart_id: String) {
+
+        // Cart items collection name
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document(cart_id) // cart id
+            .delete()
             .addOnSuccessListener {
 
-
             }
-            .addOnFailureListener { e ->
+    }
+    fun updateMyCart(context: Context, cart_id: String, itemHashMap: HashMap<String, Any>) {
 
-            }
+        // Cart items collection name
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document(cart_id) // cart id
+            .update(itemHashMap) // A HashMap of fields which are to be updated.
+
+
     }
 }

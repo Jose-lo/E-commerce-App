@@ -4,6 +4,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.local.LocalDataSource
 import com.example.productmvvmapp.data.model.*
 import com.example.productmvvmapp.data.remote.RemoteDataSource
@@ -68,5 +69,9 @@ class ProductRepositoryImpl(
 
     override suspend fun addCartItems(addToCart: CartItem) {
         dataSource.addCartItems(addToCart)
+    }
+
+    override suspend fun fetchCartItems(): Resource<List<CartItem>> {
+       return dataSource.fetchCartItems()
     }
 }

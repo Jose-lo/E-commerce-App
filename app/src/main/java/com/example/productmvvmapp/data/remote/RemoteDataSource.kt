@@ -2,6 +2,7 @@ package com.example.productmvvmapp.data.remote
 
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.productmvvmapp.core.Resource
 import com.example.productmvvmapp.data.model.CartItem
 import com.example.productmvvmapp.data.model.Product
 import com.example.productmvvmapp.data.model.ProductList
@@ -28,6 +29,10 @@ class RemoteDataSource(private val webService: WebService, private val firestore
 
     fun addCartItems(addToCart: CartItem){
         firestoreClass.addCartItems(addToCart)
+    }
+
+    suspend fun fetchCartItems(): Resource<List<CartItem>>{
+        return firestoreClass.fetchCartItems()
     }
 
 }

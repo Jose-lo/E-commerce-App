@@ -24,4 +24,5 @@ interface ProductRepository {
     suspend fun getLogin(fragment: Fragment, email: EditText, password: EditText)
     suspend fun isCartInsert(product: Product): Boolean
     suspend fun addCartItems(addToCart: CartItem)
+    suspend fun fetchCartItems():Resource<List<CartItem>>
 }
